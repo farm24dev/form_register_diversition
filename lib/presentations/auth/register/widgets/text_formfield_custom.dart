@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_register_diversition/constants/colours.dart';
 
 class TextFormFieldCustom extends StatelessWidget {
@@ -10,6 +11,7 @@ class TextFormFieldCustom extends StatelessWidget {
     this.validator,
     this.textInputAction,
     this.keyboardType,
+    this.inputFormatters,
   });
   final TextEditingController? controller;
   final String? hintText;
@@ -17,12 +19,14 @@ class TextFormFieldCustom extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       maxLines: lines,
       textInputAction: textInputAction,
+      inputFormatters: inputFormatters,
       keyboardType: keyboardType ?? (textInputAction == TextInputAction.newline ? TextInputType.multiline : TextInputType.text),
       decoration: InputDecoration(
         border: _buildInputBorder(),

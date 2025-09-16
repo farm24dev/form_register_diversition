@@ -45,6 +45,25 @@ class Validators {
     return (value) => (value != null && value.isNotEmpty && !emailPattern.hasMatch(value)) ? errMsg : null;
   }
 
+  // กำหนดฟังก์ชั่น สำหรับระบุฟิลด์ต้องใช้งานรูปแบบหมายเลขโทรศัพท์ไทย 9-10 หลัก
+  static FormFieldValidator<String> phone(String errMsg) {
+    return (value) {
+      if (value == null || value.isEmpty) return null; // ให้ required จัดการเองถ้าจำเป็น
+
+      final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+
+      // ความยาวต้องเป็น 9 หรือ 10 หลัก และต้องขึ้นต้นด้วย 0
+      if (!(digits.length == 9 || digits.length == 10)) {
+        return errMsg;
+      }
+      if (!digits.startsWith('0')) {
+        return errMsg;
+      }
+      // (อาจเพิ่มการตรวจ prefix ให้เฉพาะ 06,08,09 สำหรับมือถือได้ในอนาคต)
+      return null;
+    };
+  }
+
   // กำหนดฟังก์ชั่น สำหรับระบุฟิลด์ต้องใช้งานการตรวจสอบหลายๆ คำสั่งรวมกัน
   static FormFieldValidator<String> compose(List<FormFieldValidator<String>> validators) {
     return (value) {

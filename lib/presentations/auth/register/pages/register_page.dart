@@ -6,6 +6,7 @@ import 'package:form_register_diversition/presentations/auth/register/widgets/bu
 import 'package:form_register_diversition/presentations/auth/register/widgets/dialogs/app_dialogs.dart';
 import 'package:form_register_diversition/presentations/auth/register/widgets/dialogs/loading_dialog.dart';
 import 'package:form_register_diversition/presentations/auth/register/widgets/text_formfield_custom.dart';
+import 'package:form_register_diversition/utils/input_formatters.dart';
 import 'package:form_register_diversition/utils/validators.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -49,6 +50,15 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  void resetForm() {
+    formKey.currentState?.reset();
+    firstNameController.clear();
+    lastNameController.clear();
+    addressController.clear();
+    phoneController.clear();
+    emailController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -63,6 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
               break;
             case RegisterSuccess():
               await AppDialogs.success(context, message: 'สมัครสมาชิกสำเร็จ');
+              resetForm();
               LoadingDialog.hide(context);
               break;
             case RegisterFailure():
@@ -71,91 +82,98 @@ class _RegisterPageState extends State<RegisterPage> {
               break;
           }
         },
-        child: _view(),
+        child: _view(context),
       ),
     );
   }
 
-  Scaffold _view() {
-    return Scaffold(
-      backgroundColor: Colours.white,
-      body: SafeArea(
-        child: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 16,
-              children: [
-                const SizedBox(height: 16),
-                Center(child: Image.asset('assets/images/img_logo.png', height: 70)),
-                const Text(
-                  'สมัครสมาชิก',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  spacing: 16,
-                  children: [
-                    Expanded(
-                        child: TextFormFieldCustom(
-                      hintText: 'ชื่อ',
-                      controller: firstNameController,
-                      textInputAction: TextInputAction.next,
-                      validator: Validators.required('กรุณากรอกชื่อ'),
-                    )),
-                    Expanded(
-                      child: TextFormFieldCustom(
-                        hintText: 'นามสกุล',
-                        controller: lastNameController,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.required('กรุณากรอกนามสกุล'),
-                      ),
+  Widget _view(context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Colours.white,
+        body: SafeArea(
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 16,
+                children: [
+                  const SizedBox(height: 16),
+                  Center(child: Image.asset('assets/images/img_logo.png', height: 70)),
+                  const Text(
+                    'สมัครสมาชิก',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-                TextFormFieldCustom(
-                  hintText: 'ที่อยู่',
-                  lines: 5,
-                  controller: addressController,
-                  textInputAction: TextInputAction.newline,
-                  keyboardType: TextInputType.multiline,
-                  validator: Validators.required('กรุณากรอกที่อยู่'),
-                ),
-                TextFormFieldCustom(
-                  hintText: 'เบอร์โทรศัพท์',
-                  controller: phoneController,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.phone,
-                  validator: Validators.required('กรุณากรอกเบอร์โทรศัพท์'),
-                ),
-                TextFormFieldCustom(
-                  hintText: 'อีเมล',
-                  controller: emailController,
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: Validators.compose([
-                    Validators.required('กรุณากรอกอีเมล'),
-                    Validators.email('รูปแบบอีเมลไม่ถูกต้อง'),
-                  ]),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ButtonCustom(
-                    text: 'สมัครสมาชิก',
-                    onPressed: () async {
-                      if (!formKey.currentState!.validate()) return;
-                      bool? isConfirm = await AppDialogs.confirm(context, message: 'ต้องการสมัครสมาชิกใช่หรือไม่?');
-                      if (isConfirm == null || !isConfirm) return;
-                      registerBloc.add(const RegisterRequestEvent());
-                    },
                   ),
-                ),
-              ],
+                  Row(
+                    spacing: 16,
+                    children: [
+                      Expanded(
+                          child: TextFormFieldCustom(
+                        hintText: 'ชื่อ',
+                        controller: firstNameController,
+                        textInputAction: TextInputAction.next,
+                        validator: Validators.required('กรุณากรอกชื่อ'),
+                      )),
+                      Expanded(
+                        child: TextFormFieldCustom(
+                          hintText: 'นามสกุล',
+                          controller: lastNameController,
+                          textInputAction: TextInputAction.next,
+                          validator: Validators.required('กรุณากรอกนามสกุล'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextFormFieldCustom(
+                    hintText: 'ที่อยู่',
+                    lines: 5,
+                    controller: addressController,
+                    textInputAction: TextInputAction.newline,
+                    keyboardType: TextInputType.multiline,
+                    validator: Validators.required('กรุณากรอกที่อยู่'),
+                  ),
+                  TextFormFieldCustom(
+                    hintText: 'เบอร์โทรศัพท์',
+                    controller: phoneController,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: InputFormatters.phone,
+                    validator: Validators.compose([
+                      Validators.required('กรุณากรอกเบอร์โทรศัพท์'),
+                      Validators.phone('รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง'),
+                    ]),
+                  ),
+                  TextFormFieldCustom(
+                    hintText: 'อีเมล',
+                    controller: emailController,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: Validators.compose([
+                      Validators.required('กรุณากรอกอีเมล'),
+                      Validators.email('รูปแบบอีเมลไม่ถูกต้อง'),
+                    ]),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ButtonCustom(
+                      text: 'สมัครสมาชิก',
+                      onPressed: () async {
+                        if (!formKey.currentState!.validate()) return;
+                        bool? isConfirm = await AppDialogs.confirm(context, message: 'ต้องการสมัครสมาชิกใช่หรือไม่?');
+                        if (isConfirm == null || !isConfirm) return;
+                        registerBloc.add(const RegisterRequestEvent());
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
