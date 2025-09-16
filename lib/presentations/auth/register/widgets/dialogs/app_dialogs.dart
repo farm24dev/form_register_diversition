@@ -114,7 +114,7 @@ class AppDialogs {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bold().copyWith(
+                    style: AppTextStyles.bold.copyWith(
                       color: Colours.black,
                       fontSize: 18,
                     ),
@@ -122,7 +122,7 @@ class AppDialogs {
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.regular().copyWith(
+                    style: AppTextStyles.regular.copyWith(
                       color: Colours.black.withOpacity(0.75),
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
@@ -147,7 +147,7 @@ class AppDialogs {
                             },
                             child: Text(
                               secondaryText,
-                              style: AppTextStyles.medium().copyWith(
+                              style: AppTextStyles.medium.copyWith(
                                 color: Colours.black,
                               ),
                             ),
@@ -171,7 +171,7 @@ class AppDialogs {
                           },
                           child: Text(
                             primaryText,
-                            style: AppTextStyles.medium().copyWith(
+                            style: AppTextStyles.medium.copyWith(
                               color: Colours.white,
                             ),
                           ),

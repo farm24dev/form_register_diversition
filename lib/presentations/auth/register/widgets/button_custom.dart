@@ -27,7 +27,7 @@ class ButtonCustom extends StatelessWidget {
       ),
       child: Text(
         text ?? 'Button Custom',
-        style: AppTextStyles.medium().copyWith(fontSize: fontSize ?? 16),
+        style: AppTextStyles.medium.copyWith(fontSize: fontSize ?? 16),
       ),
     );
   }
