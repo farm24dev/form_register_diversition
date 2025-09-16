@@ -30,6 +30,16 @@
             "toolArgs": [
                 "fvm flutter"
             ]
+        },
+        {
+            "name": "form_register_diversition sandbox [android]",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5554",
+            "toolArgs": [
+                "fvm flutter"
+            ]
         }
     ]
 }

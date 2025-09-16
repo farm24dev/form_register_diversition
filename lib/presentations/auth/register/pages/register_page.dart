@@ -96,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
