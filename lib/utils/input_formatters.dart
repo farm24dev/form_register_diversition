@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
-mixin InputFormatters {
+class InputFormatters {
+  InputFormatters._();
   static get phone => [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(10),
